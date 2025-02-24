@@ -23,7 +23,7 @@ time.sleep(1)
 
 wait = WebDriverWait(driver, 10)
 
-shop = wait.until(EC.presence_of_element_located(By.CLASS_NAME, "bubble_keyword_text"))
+shop = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "bubble_keyword_text")))
 shop.click()
 time.sleep(2)
 
