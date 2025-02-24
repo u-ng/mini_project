@@ -3,6 +3,8 @@ from selenium import webdriver as wb
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 # 이미지 저장하기 위해 요청 라이브러리 필요
 import requests
@@ -19,8 +21,10 @@ driver = wb.Chrome(options=chrome_options)
 driver.get(url)
 time.sleep(1)
 
-shop = driver.find_elements(By.CLASS_NAME, "bubble_keyword_text")
-shop[0].click()
+wait = WebDriverWait(driver, 10)
+
+shop = wait.until(EC.presence_of_element_located(By.CLASS_NAME, "bubble_keyword_text")
+shop.click()
 time.sleep(2)
 
 driver.switch_to.default_content()
