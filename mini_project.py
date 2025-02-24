@@ -19,13 +19,13 @@ driver = wb.Chrome(options=chrome_options)
 driver.get(url)
 time.sleep(1)
 
-shop = driver.find_element(By.CLASS_NAME, "bubble_keyword_text")
-shop.click()
+shop = driver.find_elements(By.CLASS_NAME, "bubble_keyword_text")
+shop[0].click()
 time.sleep(2)
 
 driver.switch_to.default_content()
 driver.switch_to.frame("searchIframe")  # 프레임 전환(가게 목록)
-body = driver.find_element(By.CLASS_NAME, "Ryr1F")
+body = driver.find_elements(By.CLASS_NAME, "Ryr1F")
 
 shop_name = []
 stars = []
@@ -34,19 +34,19 @@ categories = []
 src = []
 
 while True:
-        last_height = driver.execute_script("return arguments[0].scrollHeight", body)
+        last_height = driver.execute_script("return arguments[0].scrollHeight", body[0])
         # 요소 내에서 아래로 600px 스크롤
-        driver.execute_script("arguments[0].scrollTop += 1200;", body)
+        driver.execute_script("arguments[0].scrollTop += 1200;", body[0])
         # 페이지 로드를 기다림
         time.sleep(1)  # 동적 콘텐츠 로드 시간에 따라 조절
         # 새 높이 계산
-        new_height = driver.execute_script("return arguments[0].scrollHeight", body)
+        new_height = driver.execute_script("return arguments[0].scrollHeight", body[0])
         # 스크롤이 더 이상 늘어나지 않으면 루프 종료
         if new_height == last_height:
             break
         last_height = new_height
 data = driver.find_elements(By.XPATH,'//*[@id="_pcmap_list_scroll_container"]/ul/li/div[1]/a[1]/div/div/span[1]') # 음식점 상호명(개수 세기 위해)
-button =  driver.find_element(By.XPATH, '//*[@id="app-root"]/div/div[2]/div[2]/a[7]') # 페이지 넘기는 버튼 (>)
+button =  driver.find_elements(By.XPATH, '//*[@id="app-root"]/div/div[2]/div[2]/a[7]') # 페이지 넘기는 버튼 (>)
 
 while True:
     i = 0
@@ -60,13 +60,13 @@ while True:
             time.sleep(2)
             driver.switch_to.default_content()
             driver.switch_to.frame("entryIframe") # 프레임 전환(가게 상세 페이지)
-            address = driver.find_element(By.CLASS_NAME, "LDgIH")
-            addresses.append(address.text) # 가게 주소
+            address = driver.find_elements(By.CLASS_NAME, "LDgIH")
+            addresses.append(address[0].text) # 가게 주소
             
-            category = driver.find_element(By.CLASS_NAME, "lnJFt")
-            categories.append(category.text.split(',')) # 가게 카테고리
+            category = driver.find_elements(By.CLASS_NAME, "lnJFt")
+            categories.append(category[0].text.split(',')) # 가게 카테고리
             try:
-                src.append(driver.find_element(By.XPATH, '//*[@id="ibu_1"]').get_attribute("src"))
+                src.append(driver.find_elements(By.XPATH, '//*[@id="ibu_1"]')[0].get_attribute("src"))
             except:
                 src.append('')
             try:
@@ -76,10 +76,10 @@ while True:
             i += 1
         except:
             break
-    if button.get_attribute("aria-disabled") == "false":
+    if button[0].get_attribute("aria-disabled") == "false":
         driver.switch_to.default_content()
         driver.switch_to.frame("searchIframe") # 프레임 전환(가게 목록)
-        button.click() # 페이지 넘기는 버튼 클릭
+        button[0].click() # 페이지 넘기는 버튼 클릭
         time.sleep(3)
     else:
         break
