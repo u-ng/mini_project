@@ -1,42 +1,50 @@
-name: scrape
+name: Selenium Script with Python
+
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main  # 또는 원하는 브랜치 이름
+  pull_request:
+    branches:
+      - main  # 또는 원하는 브랜치 이름
+
 jobs:
-  scrape:
+  selenium-job:
     runs-on: ubuntu-latest
-    steps:
-      - name: Check out this repo
-        uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-      - name: Installed package list
-        run: apt list --installed
-      - name: Remove Chrome
-        run: sudo apt purge google-chrome-stable
-      - name: Remove default Chromium
-        run: sudo apt purge chromium-browser
-      - name: Install a new Chromium
-        run: sudo apt install -y chromium-browser
-      - name: Install all necessary packages
-        run: pip install requests webdriver-manager selenium geopy chromedriver-autoinstaller pandas
     
-      - name: Install ubuntu package # 우분투 관련 패키지도 설치한 후
-        run: |        
-          sudo apt-get install fonts-unfonts-core
-          sudo apt-get install fonts-unfonts-extra
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add   
-      - name: 날씨 데이터 가져오기
-        env:
-            NAVERMAP_API_KEY: ${{ secrets.NAVERMAP_API_KEY }}
-            NAVERMAP_API_KEY_ID: ${{ secrets.NAVERMAP_API_KEY_ID }}
-        run: python mini_project.py
-  
-      - name: 변경 사항 커밋 및 푸시
-        run: |
-           git config --global user.name "github-actions[bot]"
-           git config --global user.email "github-actions@github.com"
-            git add shop_distance.csv shop_kakao.csv
-            git commit -m "Update lunch menu data (auto)"
-            git push
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2  # GitHub repository를 체크아웃합니다.
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'  # 사용할 Python 버전 지정
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # 필요한 라이브러리를 설치 (requirements.txt 파일에 작성)
+
+    - name: Install Google Chrome
+      run: |
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo apt install ./google-chrome-stable_current_amd64.deb
+
+    - name: Install ChromeDriver
+      run: |
+        CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
+        wget https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin/chromedriver
+        sudo chmod +x /usr/local/bin/chromedriver
+
+    - name: Run the Selenium Python script
+      run: |
+        python your_script_name.py  # 여기에 실행할 Python 스크립트 파일 이름을 입력하세요
+
+    - name: Upload result (Optional)
+      uses: actions/upload-artifact@v2
+      with:
+        name: result
+        path: ./result.csv  # 결과 파일을 업로드할 수 있습니다. (예: CSV 파일)
