@@ -14,22 +14,10 @@ chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--remote-debugging-port=9222")  # 포트 지정
 
-start_point = "서울기술교육센터"
 url = f"https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%EA%B8%B0%EC%88%A0%EA%B5%90%EC%9C%A1%EC%84%BC%ED%84%B0?c=15.00,0,0,0,dh"
 driver = wb.Chrome(options=chrome_options)
 driver.get(url)
 time.sleep(1)
-
-driver.switch_to.default_content()
-driver.switch_to.frame("searchIframe")
-Advertisement = driver.find_elements(By.CLASS_NAME, "dPXjn")
-data = driver.find_elements(By.CLASS_NAME, "YwYLL")
-start_point_name = data[len(Advertisement)]
-
-time.sleep(0.5)
-start_point_name.click()
-time.sleep(0.5)
-driver.back()
 
 shop = driver.find_element(By.CLASS_NAME, "bubble_keyword_text")
 shop.click()
