@@ -33,14 +33,14 @@ jobs:
           sudo dpkg -i google-chrome-stable_current_amd64.deb
           sudo apt-get install -f # 의존성 해결
 
-      - name: chromedriver 설치
+      - name: ChromeDriver 설치
         run: |
-          # Chrome 버전 확인 및 추출
+          # Google Chrome 버전 추출
           CHROME_VERSION=$(google-chrome-stable --version | sed -E 's/[^0-9]+([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
           echo "Chrome Version: $CHROME_VERSION"
           
-          # chromedriver의 버전 확인
-          CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
+          # chromedriver 버전 확인
+          CHROME_DRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
           echo "ChromeDriver Version: $CHROME_DRIVER_VERSION"
           
           # chromedriver 다운로드
