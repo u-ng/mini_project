@@ -33,11 +33,24 @@ jobs:
           sudo dpkg -i google-chrome-stable_current_amd64.deb
           sudo apt-get install -f # 의존성 해결
 
-          # chromedriver 설치
-          CHROME_VERSION=$(google-chrome-stable --version | sed 's/[^0-9]*\([0-9]*\.[0-9]*\.[0-9]*\)\.[0-9]*$/\1/')
-          wget https://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/ # chromedriver를 /usr/local/bin에 이동시켜 사용 가능하게
+          - name: chromedriver 설치
+            run: |
+              # Chrome 버전 확인 및 추출
+              CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}' | cut -d'.' -f1,2,3)
+              echo "Chrome Version: $CHROME_VERSION"
+              
+              # chromedriver 다운로드 URL 구성
+              DRIVER_URL="https://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)"
+              echo "Downloading chromedriver from: $DRIVER_URL"
+              
+              # chromedriver 다운로드
+              wget $DRIVER_URL/chromedriver_linux64.zip
+              
+              # 다운로드한 chromedriver 압축 풀기
+              unzip chromedriver_linux64.zip
+              
+              # chromedriver를 /usr/local/bin에 이동
+              sudo mv chromedriver /usr/local/bin/
 
           pip install requests
           pip install selenium
