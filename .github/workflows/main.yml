@@ -41,7 +41,7 @@ jobs:
 
     - name: Run the Selenium Python script
       run: |
-        python your_script_name.py  # 여기에 실행할 Python 스크립트 파일 이름을 입력하세요
+        python mini_project.py  # 여기에 실행할 Python 스크립트 파일 이름을 입력하세요
 
     - name: Upload result (Optional)
       uses: actions/upload-artifact@v4
