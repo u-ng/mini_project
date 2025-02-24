@@ -21,9 +21,9 @@ driver = wb.Chrome(options=chrome_options)
 driver.get(url)
 time.sleep(1)
 
-wait = WebDriverWait(driver, 10)
+wait = WebDriverWait(driver, 60)
 
-shop = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "bubble_keyword_text")))
+shop = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "bubble_keyword_text")))
 shop.click()
 time.sleep(2)
 
