@@ -12,11 +12,14 @@ import pandas as pd
 import geopy.distance # 거리계산 라이브러리
 
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")  # Headless 모드 활성화
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
+
+service = Service(ChromeDriverManager().install())
     
 def save_csv(name, shop_name, stars, addresses, categories, src):
     import csv
@@ -31,7 +34,7 @@ def save_csv(name, shop_name, stars, addresses, categories, src):
 def naver_shop(csv_name):
     start_point = "서울기술교육센터"
     url = f"https://map.naver.com/p/search/{start_point}?c=15.00,0,0,0,dh"
-    driver = wb.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    driver = wb.Chrome(service, options=chrome_options)
     driver.get(url)
     time.sleep(1)
 
