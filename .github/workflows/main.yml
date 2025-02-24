@@ -41,10 +41,14 @@ jobs:
           
           # chromedriver 다운로드 URL 구성
           DRIVER_URL="https://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)"
-          echo "Downloading chromedriver from: $DRIVER_URL"
+          echo "Driver URL: $DRIVER_URL"
+          
+          # chromedriver 버전 확인
+          CHROME_DRIVER_VERSION=$(curl -sS $DRIVER_URL)
+          echo "ChromeDriver Version: $CHROME_DRIVER_VERSION"
           
           # chromedriver 다운로드
-          wget $DRIVER_URL/chromedriver_linux64.zip
+          wget https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
           
           # 다운로드한 chromedriver 압축 풀기
           unzip chromedriver_linux64.zip
