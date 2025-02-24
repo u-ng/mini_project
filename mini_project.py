@@ -34,7 +34,7 @@ def save_csv(name, shop_name, stars, addresses, categories, src):
 def naver_shop(csv_name):
     start_point = "서울기술교육센터"
     url = f"https://map.naver.com/p/search/{start_point}?c=15.00,0,0,0,dh"
-    driver = wb.Chrome(service, options=chrome_options)
+    driver = wb.Chrome(service=service, options=chrome_options)
     driver.get(url)
     time.sleep(1)
 
