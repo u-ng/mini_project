@@ -14,6 +14,9 @@ import geopy.distance # 거리계산 라이브러리
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 chrome_options = Options()
 chrome_options.add_argument("--headless")  # Headless 모드 활성화
 chrome_options.add_argument("--no-sandbox")
@@ -39,6 +42,8 @@ def naver_shop(csv_name):
     time.sleep(1)
 
     driver.switch_to.default_content()
+    wait = WebDriverWait(driver, 10)
+    frame = wait.until(EC.frame_to_be_available_and_switch_to_it((By.ID, "searchIframe")))
     driver.switch_to.frame("searchIframe")
     Advertisement = driver.find_elements(By.CLASS_NAME, "dPXjn")
     data = driver.find_elements(By.CLASS_NAME, "YwYLL")
