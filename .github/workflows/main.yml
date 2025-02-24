@@ -39,12 +39,8 @@ jobs:
           CHROME_VERSION=$(google-chrome-stable --version | sed -E 's/[^0-9]+([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
           echo "Chrome Version: $CHROME_VERSION"
           
-          # chromedriver 다운로드 URL 구성
-          DRIVER_URL="https://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)"
-          echo "Driver URL: $DRIVER_URL"
-          
-          # chromedriver 버전 확인
-          CHROME_DRIVER_VERSION=$(curl -sS $DRIVER_URL)
+          # chromedriver의 버전 확인
+          CHROME_DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
           echo "ChromeDriver Version: $CHROME_DRIVER_VERSION"
           
           # chromedriver 다운로드
