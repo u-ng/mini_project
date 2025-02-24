@@ -6,7 +6,7 @@ on:
       - main  # 또는 원하는 브랜치 이름
   pull_request:
     branches:
-      - main  # 또는 원하는 브랜치 이름
+      - main  # 또는 원하는 브랜치 이름 
 
 jobs:
   selenium-job:
